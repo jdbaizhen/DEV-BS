@@ -4,123 +4,70 @@ let Option = Select.Option;
 
 import './index.less'
 
+const collage = [
+    {
+        collage_eng : 'collage_li',
+        collage_name : '理学院'
+    },
+    {
+        collage_eng : 'collage_wulian',
+        collage_name : '物联网学院'
+    },
+    {
+        collage_eng : 'collage_shengwu',
+        collage_name : '生工学院'
+    },
+    {
+        collage_eng : 'collage_yi',
+        collage_name : '医学院'
+    }
+  ];
+const major = {
+    collage_li :['信息与计算科学','光电信息科学'],
+    collage_wulian: ['计算机科学','物联网科学','光电信息技术','临床医学'],
+    collage_shengwu : ['临床医学','光电信息技术','物联网科学','计算机科学','物联网科','光电信息技','临医学'],
+    collage_yi : ['临床医学','光电信息技术','物联网科学','计机科学','物联科学','光电息技术','临床学']
+}
+
 export default class Collage extends Component{
     constructor(){
         super();
         this.state={
             visible: false,
-            inputCollage : '',
-            inputMajor : '',
-            inputShortMajor : '',
-            collage : [
-                {
-                    nameCollage : '理学院',
-                    major : [
-                        {
-                            nameMajor : '信息与计算科学',
-                            shortName : '信计'
-                        },
-                        {
-                            nameMajor : '光电信息技术',
-                            shortName : '光科'
-                        }
-                    ]
-                },
-                {
-                    nameCollage : '物联网学院',
-                    major : [
-                        {
-                            nameMajor : '计算机科学',
-                            shortName : '计科'
-                        },
-                        {
-                            nameMajor : '物联网科学',
-                            shortName : '物联'
-                        },
-                        {
-                            nameMajor : '物联网科学',
-                            shortName : '物联'
-                        },
-                        {
-                            nameMajor : '物联网科学',
-                            shortName : '物联'
-                        }
-                    ]
-                },
-                {
-                    nameCollage : '生工学院',
-                    major : [
-                        {
-                            nameMajor : '信息与计算科学',
-                            shortName : '信计'
-                        },
-                        {
-                            nameMajor : '光电信息技术',
-                            shortName : '光科'
-                        },
-                        {
-                            nameMajor : '物联网科学',
-                            shortName : '物联'
-                        },
-                        {
-                            nameMajor : '物联网科学',
-                            shortName : '物联'
-                        }
-                    ]
-                },
-                {
-                    nameCollage : '医学院',
-                    major : [
-                        {
-                            nameMajor : '口腔医学',
-                            shortName : '信计'
-                        },
-                        {
-                            nameMajor : '光电信息技术',
-                            shortName : '光科'
-                        },
-                        {
-                            nameMajor : '临床医学',
-                            shortName : '物联'
-                        },
-                        {
-                            nameMajor : '物联网科学',
-                            shortName : '物联'
-                        }
-                    ]
-                }
-            ]
+            collage : collage,
+            major : major[collage[0].collage_eng]
         }
     }
+
+
 
     showModal = () => {
         this.setState({
             visible: true,
         });
     }
-    handleOk = (e) => {
-        console.log(e);
+    handleOk = () => {
         this.setState({
-            visible: false,
+            visible: false
         });
     }
-    handleCancel = (e) => {
-        console.log(e);
+    handleCancel = () => {
         this.setState({
-            visible: false,
+            visible: false
         });
     }
-    handleChange = (e) => {
-        let value = e.target.value;
+
+    selectChange = (value) => {
         this.setState({
-            inputCollage : value
+            major : major[value]
         })
     }
 
     render() {
         return (
-            <div id='collage' className='collageDiv'>
+            <div id='collage' className='collageDiv common'>
                 <h2>学院专业</h2>
+
 
                 <Button
                     type="primary"
@@ -129,64 +76,44 @@ export default class Collage extends Component{
                 >
                     <Icon type="plus"></Icon>
                 </Button>
+
                 <Modal
-                    title="Basic Modal"
+                    title="添加学院专业"
                     visible={this.state.visible}
                     onOk={this.handleOk}
-                    onCancel={(e)=>this.handleCancel}
+                    onCancel={this.handleCancel}
                 >
                     学院:
-                    <Input
-                        className='collageInput'
-                        type='text'
-                        placeholder='学院'
-                        value={this.state.inputCollage}
-                        onChange={(e)=>this.handleChange}
-                    />
-                   {/* 专业:
-                    <Input
-                        className='collageInput'
-                        type='text'
-                        placeholder='专业'
-                        value={this.state.inputMajor}
-                        onChange={(e)=>this.handleChange(e,'inputMajor')}
-                    />
-                    简称:
-                    <Input
-                        className='collageInput'
-                        type='text'
-                        placeholder='专业简称'
-                        value={this.state.inputShortMajor}
-                        onChange={(e)=>this.handleChange(e,'inputShortMajor')}
-                    />*/}
+                    <Select
+                        defaultValue= {this.state.collage[0].collage_name}
+                        style={{ width: 200 }}
+                        onChange={this.selectChange}
+                    >
+                        {this.state.collage.map((item,index)=>{
+                            return <Option key={index} value={item.collage_eng}>{item.collage_name}</Option>
+                        })}
+
+                    </Select>
                 </Modal>
 
 
                 <div className='collageCom'>
                     <Select
-                        defaultValue= '理学院'
+                        defaultValue= {this.state.collage[0].collage_name}
                         style={{ width: 300 , marginBottom : '40px'}}
-                        onChange={(e)=>{this.setState({select:e})}}
+                        onChange={this.selectChange}
                     >
                         {this.state.collage.map((item,index)=>{
-                            return <Option key={index} value={item.nameCollage}>{item.nameCollage}</Option>
+                            return <Option key={index} value={item.collage_eng}>{item.collage_name}</Option>
                         })}
 
                     </Select>
 
 
                     <Timeline style={{textAlign:'left'}}>
-                        {/*{this.state.collage.map((item,index)=>{
-									let select = this.state.select;
-									if(select == item.nameCollage){
-										this.state.collage[index].major.map((item,i)=>{
-											return <Timeline.Item>{item.nameMajor}--{item.shortName}</Timeline.Item>
-										})
-									}
-								})}*/}
                         {
-                            this.state.collage[1].major.map((item,index)=>{
-                                return <Timeline.Item>{item.nameMajor}--{item.shortName}</Timeline.Item>
+                            this.state.major.map((item,index)=>{
+                                return <Timeline.Item key={index}>{item}</Timeline.Item>
                             })
                         }
                     </Timeline>

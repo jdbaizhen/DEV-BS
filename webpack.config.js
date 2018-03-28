@@ -9,7 +9,7 @@ let ExtractTextWebpack=require("extract-text-webpack-plugin");
 
 let isDev = process.env.NODE_ENV ==='develop';
 let isTest = process.env.NODE_ENV ==='test';
-let testIp='192.168.3.94:4332';
+let testIp='192.168.3.89:8080';
 let port = 4333;
 let serverPort = 4331;
 let host = 'localhost';
@@ -43,6 +43,15 @@ module.exports = {
 					limit: 8192,
 					outputPath:'images/'
 				}
+			},
+			{
+                test: /\.(xlsx)$/,
+                loader: "url-loader",
+                options: {
+                    limit: 8192,
+                    outputPath:'file/'
+
+                }
 			},
 			{
 				test: /\.json$/,

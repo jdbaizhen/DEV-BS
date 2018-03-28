@@ -1,5 +1,5 @@
 import React from 'react';
-import {Layout, Menu, Icon, Card, Avatar, Tooltip,Button,Timeline ,Select,Modal,Popconfirm ,Input} from 'antd';
+import {Layout, Menu, Icon, Card, Avatar, Tooltip,Button,Timeline ,Select,Modal,Popconfirm ,Input,Upload} from 'antd';
 let {Header,Content,Footer} = Layout;
 let { Meta} = Card;
 let Option = Select.Option;
@@ -11,6 +11,10 @@ import TeacherList from './subpage/TeacherList'
 import ClassList from './subpage/ClassList'
 
 import './index.less'
+import collageFile from '../../common/file/学院专业信息录入表.xlsx';
+import studentFile from '../../common/file/学生信息录入表.xlsx';
+import classsFile from '../../common/file/必选课信息表.xlsx';
+import teacherFile from '../../common/file/教师信息录入表.xlsx';
 
 const StudentInfo = [{
 			key: '1',
@@ -116,25 +120,33 @@ class SuperAdmin extends React.Component {
 						img : '',
 						href : '#collage',
 						title : '学院专业',
-						description : '下载/上传江南大学学院专业信息'
+						description : '下载/上传江南大学学院专业信息',
+						downloadURL : collageFile,
+						action : '/managers/reg/cm'
 					},
 					{
 						img : '',
 						href : '#student',
 						title : '学生信息',
-						description : '下载/上传江南大学学生信息'
+						description : '下载/上传江南大学学生信息',
+                        downloadURL : studentFile,
+                        action : '/managers/reg/student'
 					},
 					{
 						img : '',
 						href : '#teacher',
 						title : '教师信息',
-						description : '下载/上传江南大学教师信息'
+						description : '下载/上传江南大学教师信息',
+                        downloadURL : teacherFile,
+                        action : '/managers/reg/teacher'
 					},
 					{
 						img : '',
 						href : '#classinfo',
 						title : '选课信息',
-						description : '下载/上传江南大学学生选课信息'
+						description : '下载/上传江南大学学生选课信息',
+                        downloadURL : classsFile,
+                        action : '/managers/reg/cs'
 					}
 				],
 		}
@@ -142,17 +154,40 @@ class SuperAdmin extends React.Component {
 
 
 
-    handleClick=(title)=>{
-		alert(title)
-	}
-
 	pageChange=(page,pageSize)=>{
 		console.log(page)
 	}
 
+    addUpload = (file,fileList) =>{
+        let fileName = file.name;
+        let reg = /\.xlsx/gi;
+        console.log(fileList);
+        if(!reg.test(fileName)){
+        	alert('请上传.xlsx类型的文件');
+		}else{
+            let reader=new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function(){
+                let obj={};
+                obj.name=file.name;
+                obj.url=this.result;
+               	console.log(this.result)
+            }
+		}
 
+    }
+
+    uploadChange = (data) => {
+        console.log(data.file.response);
+    }
 
 	render() {
+        const props = {
+            accept : 'multipart/form-data',
+            beforeUpload : this.addUpload,
+			onChange : this.uploadChange,
+        };
+
 		return (
 			<Layout className="layout">
 				<Header className='nav'>
@@ -178,15 +213,19 @@ class SuperAdmin extends React.Component {
 								cover={<img alt="example" src='https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png'/>}
 								actions={[
 											<Tooltip placement="bottom" title="下载文件格式模板">
-												<Button onClick={()=>this.handleClick(item.title)}>
-													<Icon type='download'/>
+												<Button>
+													<a href={item.downloadURL}>
+														<Icon type='download'/>
+													</a>
 												</Button>
 											</Tooltip>
 											,
 											<Tooltip placement="bottom" title="需按照模板格式上传文件">
-												<Button>
-													<Icon type='upload'/>
-												</Button>
+												<Upload {...props} action={item.action}>
+													<Button>
+														<Icon type='upload'/>
+													</Button>
+												</Upload>
 											</Tooltip>
 										]}
 							>

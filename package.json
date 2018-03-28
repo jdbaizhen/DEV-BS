@@ -44,7 +44,9 @@
   },
   "dependencies": {
     "antd": "^3.0.3",
+    "download": "^6.2.5",
     "es6-promise": "^4.1.1",
+    "fs": "^0.0.1-security",
     "history": "^4.7.2",
     "lodash.clonedeep": "^4.5.0",
     "moment": "^2.20.1",

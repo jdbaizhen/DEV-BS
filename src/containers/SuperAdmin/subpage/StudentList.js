@@ -2,6 +2,7 @@ import React,{Component} from 'react'
 import { Table ,Pagination, Input, Popconfirm ,Select} from 'antd'
 const Option = Select.Option;
 import './index.less'
+import {getStudentList} from "../../../api/homeworkt";
 
 const EditableCell = ({ editable, value, onChange }) => (
     <div>
@@ -81,9 +82,17 @@ class StudentList extends Component{
         this.cacheData = this.props.dataSource.map(item => ({ ...item }));
     }
 
+    studentListDataSource = (data) => {
+        this.setState({
+            dataSource : data
+        })
+    }
+
     paginChange = (page,pageSize) => {
         let searchMajor = this.state.searchMajor;
-        console.log(page,pageSize,searchMajor);
+        /*let result = getStudentList(searchMajor,page,pageSize);
+        this.studentListDataSource(result);*/
+
     }
     renderColumns=(text, record, column)=>{
         return (
@@ -113,7 +122,14 @@ class StudentList extends Component{
     save=(key)=> {
         const newData = [...this.state.data];
         const target = newData.filter(item => key === item.key)[0];
-        console.log(target);
+
+        /*changeStudentList(target).then(data=>{
+            if(data.result){
+                delete target.editable;
+                this.setState({ data: newData });
+                this.cacheData = newData.map(item => ({ ...item }));
+            }
+        })*/
         if (target) {
             delete target.editable;
             this.setState({ data: newData });
@@ -130,11 +146,17 @@ class StudentList extends Component{
         }
     }
     delete=(key)=> {
-        const newData = [...this.state.data];
-        const target = newData.filter(item => key === item.key)[0];
-        if (target) {
-
-        }
+        /*delStudentList(key).then(data=>{
+            if(data.result){
+                let searchMajor = this.state.searchMajor;
+                getStudentList(searchMajor,'1','10').then(data=>{
+                    let dataSource = JSON.parse(data);
+                    this.setState({
+                        dataSource : dataSource
+                    })
+                })
+            }
+        })*/
     }
 
 
@@ -144,7 +166,9 @@ class StudentList extends Component{
             major : major[value],
             index : 0
         })
-        console.log(this.state.major[0])
+       /* let major = major[value][0];
+        let result = getStudentList(major,'1','10');
+        this.studentListDataSource(result);*/
     }
 
     searchInfo = (value,option) =>{
@@ -152,7 +176,9 @@ class StudentList extends Component{
             index : option.key,
             searchMajor: value
         })
-        console.log(value);
+        /*let major = value
+        let result = getStudentList(major,'1','10');
+        this.studentListDataSource(result);*/
     }
 
     render() {

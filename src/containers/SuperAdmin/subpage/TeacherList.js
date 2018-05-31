@@ -2,6 +2,7 @@ import React,{Component} from 'react'
 import { Table ,Pagination, Input, Popconfirm ,Select} from 'antd'
 const Option = Select.Option;
 import './index.less'
+import {getStudentList} from "../../../api/homeworkt";
 
 const EditableCell = ({ editable, value, onChange }) => (
     <div>
@@ -17,21 +18,18 @@ class TeacherList extends Component{
     constructor(props) {
         super(props);
         this.columns = [{
-            title: 'name',
+            title: '姓名',
             dataIndex: 'name',
-            width: '25%',
             render: (text, record) => this.renderColumns(text, record, 'name'),
         }, {
-            title: 'age',
-            dataIndex: 'age',
-            width: '15%',
-            render: (text, record) => this.renderColumns(text, record, 'age'),
+            title: '职工号',
+            dataIndex: 'id',
+            render: (text, record) => this.renderColumns(text, record, 'id'),
         }, {
-            title: 'address',
-            dataIndex: 'address',
-            width: '40%',
-            render: (text, record) => this.renderColumns(text, record, 'address'),
-        }, {
+            title: '学院',
+            dataIndex: 'collage',
+            render: (text, record) => this.renderColumns(text, record, 'collage'),
+        },{
             title: 'operation',
             dataIndex: 'operation',
             render: (text, record) => {
@@ -41,12 +39,15 @@ class TeacherList extends Component{
                         {
                             editable ?
                                 <span>
-                  <a onClick={() => this.save(record.key)}>Save</a>
+                  <a onClick={() => this.save(record.key)}>保存   </a>
                   <Popconfirm title="Sure to cancel?" onConfirm={() => this.cancel(record.key)}>
-                    <a>Cancel</a>
+                    <a>|   取消  </a>
+                  </Popconfirm>
+                  <Popconfirm title="Sure to delete?" onConfirm={() => this.delete(record.key)}>
+                    <a>|   删除</a>
                   </Popconfirm>
                 </span>
-                                : <a onClick={() => this.edit(record.key)}>Edit</a>
+                                : <a onClick={() => this.edit(record.key)}>编辑</a>
                         }
                     </div>
                 );
@@ -61,9 +62,12 @@ class TeacherList extends Component{
         this.cacheData = this.props.dataSource.map(item => ({ ...item }));
     }
 
+
     paginChange = (page,pageSize) => {
         let searchMajor = this.state.searchMajor;
-        console.log(page,pageSize,searchMajor)
+        /*let result = getStudentList(searchMajor,page,pageSize);
+        this.studentListDataSource(result);*/
+
     }
     renderColumns=(text, record, column)=>{
         return (
@@ -93,6 +97,14 @@ class TeacherList extends Component{
     save=(key)=> {
         const newData = [...this.state.data];
         const target = newData.filter(item => key === item.key)[0];
+
+        /*changeStudentList(target).then(data=>{
+            if(data.result){
+                delete target.editable;
+                this.setState({ data: newData });
+                this.cacheData = newData.map(item => ({ ...item }));
+            }
+        })*/
         if (target) {
             delete target.editable;
             this.setState({ data: newData });
@@ -108,6 +120,20 @@ class TeacherList extends Component{
             this.setState({ data: newData });
         }
     }
+    delete=(key)=> {
+        /*delStudentList(key).then(data=>{
+            if(data.result){
+                let searchMajor = this.state.searchMajor;
+                getStudentList(searchMajor,'1','10').then(data=>{
+                    let dataSource = JSON.parse(data);
+                    this.setState({
+                        dataSource : dataSource
+                    })
+                })
+            }
+        })*/
+    }
+
 
     selectChange = (value) => {
         let major = this.props.major;
@@ -115,14 +141,19 @@ class TeacherList extends Component{
             major : major[value],
             index : 0
         })
+       /* let major = major[value][0];
+        let result = getStudentList(major,'1','10');
+        this.studentListDataSource(result);*/
     }
 
     searchInfo = (value,option) =>{
         this.setState({
             index : option.key,
-            searchMajor : value
+            searchMajor: value
         })
-        console.log(value);
+        /*let major = value
+        let result = getStudentList(major,'1','10');
+        this.studentListDataSource(result);*/
     }
 
     render() {

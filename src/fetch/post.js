@@ -16,9 +16,10 @@ export function post(url,paramsObj){
     let result = fetch(url,{
         method : 'POST',
         credentials:'include',
-        headers : {
-            'Accept':'application/json,text/plain,*/*',
-            'Content-Type' : 'application/json'
+        headers: {
+            'Accept' : 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded,charset=UTF-8',
+            'Cache-Control': 'max-age=3600'
         },
         body:objparams(paramsObj)
     });

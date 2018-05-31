@@ -1,81 +1,148 @@
 import * as Types from '../action-types';
 import cloneDeep from 'lodash.clonedeep';
 
-let initMapDataState = {
-	roadData: []
+let initAllCourse = {
+    allCourse:[]
 };
-let mapDataR = (state = cloneDeep(initMapDataState), action) => {
+let mapDataR = (state = cloneDeep(initAllCourse), action) => {
 	switch (action.type) {
-		case Types.MAPSELF_GET_SUCCESS:
+		case Types.HOMEWORKT_GET_ALLCOURSE:
 			return {
 				...state,
-				roadData: action.roadData
+                allCourse: action.allCourse
 			};
 		default:
 			return state
 	}
 };
 
-
-let initTermState = {
-	id:undefined,
-	name:undefined,
-	pageIndex: 1,
-	pageSize: 10,
-	beginTime: undefined,
-	endTime: undefined,
-};
-
-let mapTermR=(state = cloneDeep(initTermState), action) => {
+let initSearchTerms = {
+	pageIndex:'1',
+	pageSize:'10',
+	courseId:undefined
+}
+let SearchTermR = (state = cloneDeep(initSearchTerms),action) => {
 	switch (action.type) {
-		case Types.MAPSELF_SET_SEARCHID:
+		case Types.HOMEWORK_SET_PAGES:
 			return {
 				...state,
-				id:action.id,
-				name:action.name,
-				beginTime:undefined,
-				endTime:undefined,
-				pageIndex: 1
-			};
-		case Types.MAPSELF_SET_SEARCHTERM:
+				pageIndex:action.pageIndex,
+				pageSize:action.pageSize
+			}
+		case Types.HOMEWORK_SET_COURSEID:
 			return {
 				...state,
-				beginTime: action.beginTime,
-				endTime: action.endTime,
-				pageIndex: 1
-			};
-		case Types.MAPSELF_SET_SEARCHPAGE:
+				courseId:action.courseId
+			}
+		default:
+			return state;
+	}
+}
+
+let initHomeWorkList = {
+    homeWorkData: [],
+    pages: undefined,
+    count: 0
+}
+let HomeWorkListR = (state = cloneDeep(initHomeWorkList),action) => {
+	switch (action.type) {
+		case Types.HOMEWORK_GET_LIST:
 			return {
 				...state,
+				homeWorkData:action.homeWorkData,
+				pages:action.pages,
+				count:action.count
+			}
+		default:
+			return state
+	}
+}
+
+let initSubjectList = {
+	details : [],
+	count : 0
+}
+
+let SubjectListR = (state = cloneDeep(initSubjectList),action) => {
+	switch (action.type) {
+		case Types.HOMEWORKT_GET_SUBJECTLIST:
+			return {
+				...state,
+				details : action.details,
+				count:action.count
+			}
+		default:
+			return state
+	}
+}
+
+let initSubjectSearchTerm = {
+	pageIndex:'1',
+	pageSize:'10',
+	courseId:undefined
+}
+
+let SubjecyListSearchTermR = (state=cloneDeep(initSubjectSearchTerm),action)=>{
+	switch (action.type) {
+		case Types.HOMEWORK_SET_SUBJECTLISTPAGES:
+			return {
+				...state,
+				pageIndex:action.pageIndex,
 				pageSize:action.pageSize,
-				pageIndex:action.pageIndex
-			};
+			}
+		case Types.HOMEWORKT_SET_SUBJECTLISTCOURSEID:
+			return {
+				...state,
+				courseId:action.courseId
+			}
 		default:
-			return state;
-	}
-};
+			return state
 
-let initTableState = {
-	details: [],
-	count: 0,
-};
-let mapTableR = (state = cloneDeep(initTableState), action) => {
+	}
+}
+
+let initStudentList = {
+	details : [],
+	count : 0
+}
+
+let StudentHomeWorkListR = (state=cloneDeep(initStudentList),action) => {
 	switch (action.type) {
-		case Types.MAPSELF_GET_TABLE:
-			return {...state,
-				details:action.details,
-				count:action.count,
-			};
+		case Types.HOMEWORKT_GET_STUDENTHOMEWORLLIST:
+			return {
+				...state,
+				details : action.details,
+				count : action.count
+			}
 		default:
-			return state;
+			return state
 	}
-};
+}
 
+let initStudentListTerm = {
+	pageIndex :'1',
+	pageSize : '10'
+}
 
-
+let StudentListSearchTermR = (state=cloneDeep(initStudentListTerm),action) => {
+	switch (action.type) {
+		case Types.HOMEWORKT_SET_STUDENTLISTPAGE:
+			return {
+				...state,
+				pageIndex:action.pageIndex,
+				pageSize:action.pageSize
+			}
+		default:
+			return state
+	}
+}
 
 export default {
+    SearchTermR,
+    HomeWorkListR,
 	mapDataR,
-	mapTableR,
-	mapTermR
+    SubjectListR,
+    SubjecyListSearchTermR,
+    StudentHomeWorkListR,
+    StudentListSearchTermR
 }

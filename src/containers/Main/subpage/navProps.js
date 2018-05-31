@@ -1,7 +1,7 @@
 export default {
 	theme:'dark',
 	mode:'inline',
-	navItems:[
+	navList:[
 		{
 			header:'作业管理',
 			router:'/homework',
@@ -26,9 +26,14 @@ export default {
 			header:'论坛交流',
 			router:'/tribune',
 			icon:'github',
-		}
+		},
+        {
+            header:'个人信息',
+            router:'/selfinfo',
+            icon:'user-add',
+        }
 	],
-	navItemsT:[
+	navListT:[
         {
             header:'作业管理',
             router:'/homeworkt',
@@ -53,6 +58,11 @@ export default {
             header:'论坛交流',
             router:'/tribunet',
             icon:'github',
+        },
+        {
+            header:'个人信息',
+            router:'/selfinfo',
+            icon:'user-add',
         }
 	]
 }

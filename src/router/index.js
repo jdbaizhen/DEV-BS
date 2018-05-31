@@ -4,14 +4,22 @@ import QuestionBank from "../containers/QuestionBank/index";
 import Resource from "../containers/Resource/index";
 import Tribune from "../containers/Tribune/index";
 import HomeWork from "../containers/HomeWork/index";
+import HomeWorkIndex from '../containers/HomeWork/subpage/index';
+import HomeWorkCorrect from '../containers/HomeWork/subpage/HomeWorkCorrect';
 import HomeWorkT from "../containers/HomeWorkT/index";
 import GradeT from "../containers/GradeT/index";
+import GradetList from "../containers/GradeT/subpage/GradetList";
+import GradetDetail from "../containers/GradeT/subpage/GradetDetail";
 import QuestionBankT from "../containers/QuestionBankT/index";
 import ResourceT from "../containers/ResourceT/index";
 import TribuneT from "../containers/TribuneT/index";
 import HomeWorkList from "../containers/HomeWorkT/subpage/index"
 import StudentWorkDetail from "../containers/HomeWorkT/subpage/StudentWorkDetail";
+import StudentWorkCorrect from "../containers/HomeWorkT/subpage/StudentWorkCorrect"
+import StudentWorkCorrectOnline from "../containers/HomeWorkT/subpage/StudentWorkCorrectOnline"
+import StudentWorkIndex from "../containers/HomeWorkT/subpage/StudentWorkIndex"
 import SuperAdmin from '../containers/SuperAdmin/index'
+import SelfInfo from '../containers/SelfInfo/index'
 
 export default [
         {
@@ -23,7 +31,17 @@ export default [
         },
         {
             path:'/homework',
-            component:HomeWork
+            component:HomeWork,
+            routes: [
+                {
+                    path:'/homework/main',
+                    component:HomeWorkIndex
+                },
+                {
+                    path:'/homework/correct/:workId',
+                    component:HomeWorkCorrect
+                }
+            ]
         },
         {
             path:'/grade',
@@ -51,13 +69,37 @@ export default [
                 },
                 {
                     path : '/homeworkt/detail',
-                    component:StudentWorkDetail
+                    component:StudentWorkIndex,
+                    routes : [
+                        {
+                            path : '/homeworkt/detail/main/:workId',
+                            component:StudentWorkDetail
+                        },
+                        {
+                            path : '/homeworkt/detail/correct/:workId',
+                            component:StudentWorkCorrect
+                        },
+                        {
+                            path : '/homeworkt/detail/correctonline/:workId',
+                            component:StudentWorkCorrectOnline
+                        }
+                    ]
                 }
             ]
         },
         {
             path:'/gradet',
-            component:GradeT
+            component:GradeT,
+            routes : [
+                {
+                    path : '/gradet/main',
+                    component:GradetList
+                },
+                {
+                    path : '/gradet/detail/:workId',
+                    component:GradetDetail
+                },
+            ]
         },
         {
             path:'/questionbankt',
@@ -74,6 +116,10 @@ export default [
         {
             path:'/superadmin',
             component:SuperAdmin,
+        },
+        {
+            path:'/selfinfo',
+            component:SelfInfo,
         }
 ]
 

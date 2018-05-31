@@ -1,7 +1,6 @@
 import React from 'react';
 import {Route,Switch} from 'react-router-dom'
-import {Layout,Select} from 'antd';
-import {connect} from 'react-redux';
+import {Layout} from 'antd';
 
 import Title from "../../components/Title/index";
 
@@ -12,7 +11,7 @@ class HomeWorkT extends React.Component {
 
 	render() {
 	    let {routes} = this.props;
-	    let Default = routes[0].component;
+        let Default = routes[0].component;
 		return (
 			<Layout style={{position: 'relative', top: '0', right: '0'}}>
                 <Title tier1='作业管理'/>
@@ -20,7 +19,7 @@ class HomeWorkT extends React.Component {
                     {
                         routes.map((route, i) => (
                             <Route path={route.path} key={i} render={props=>(
-                                <route.component />
+                                <route.component routes={routes}/>
                             )}/>
                         ))
                     }

@@ -4,43 +4,105 @@ let {Header,Content} = Layout
 let {Option} = Select
 import {connect} from 'react-redux';
 import Title from "../../components/Title/index";
-import SearchTable from '../../components/SearchTable/index'
-import GradeTable from '../../components/GradeTable/index'
+import GradeList from './subpage/index'
+import {getSession} from "../../utils/util";
+import * as action from '../../redux/actions/grade';
+import MyPagination from '../../components/MyPagination/index';
 
-import * as action from '../../redux/actions/data';
+class Grade extends React.Component {
+	constructor(props){
+		super(props)
+		this.state={
+			loading:true,
+			allCourse:[],
+			count: 0,
+            setTableH: () => {
+            },
+		}
+	}
 
-class Data extends React.Component {
+    setTableH = (fn) => {
+        this.setState({setTableH: fn});
+    };
+    handleSearch = (value) => {
+    	let {setSearchScore} = this.props;
+        setSearchScore(value);
+	}
+
+	getData = (obj) => {
+        let token = getSession('token');
+        let {getScoreList} = this.props;
+        getScoreList({
+			pageIndex:'1',
+			pageSize:'10',
+			courseId:undefined,
+			...obj
+		},{token:token}).then(data=>{
+			if(data.result){
+				this.setState({
+					loading:false
+				})
+			}
+		})
+	}
+
+
+    componentDidMount() {
+        let token = getSession('token');
+        let {getTeacherSubject} = this.props;
+        this.getData();
+        getTeacherSubject({token: token}).then(data => {
+            if(data.result){
+                this.setState({
+                    allCourse:data.allCourse
+                })
+            }
+        })
+    }
+
+    componentWillReceiveProps(newProps) {
+		let {pageIndex,pageSize,courseId} = newProps;
+        this.getData({pageIndex,pageSize,courseId});
+	}
+
 	render() {
-
+        let {allCourse,setTableH,loading} = this.state;
+        let {pageIndex,setPageScore,count} = this.props;
+        let paginationProps = {
+            count,
+            pageIndex,
+            setPage:setPageScore,
+            isShowSizeChanger: false
+        }
+        let tableProps = {
+        	loading,
+            setTableH: setTableH,
+        }
 		return (
 			<Layout>
 				<Title tier1='成绩查询'/>
 				<Layout style={{backgroundColor:'#ffffff',marginTop:'10px',boxShadow:'0 0 10px rgba(0, 21, 41, 0.08)'}}>
 					<Header style={{backgroundColor:'#fff'}}>
-						学期:
+						选择课程:
 						<Select
-							placeholder="学期"
 							style={{width:150,margin:'0px 20px 0px 10px'}}
+							placeholder="选择课程"
+							onChange = {this.handleSearch}
 						>
-							<Option value="2017上学期">2017上学期</Option>
-							<Option value="2017下学期">2017下学期</Option>
+                            {
+                                allCourse.map((item,index) => {
+                                    return (
+										<Option key={index} value={item.courseId}>
+                                            {item.courseName}
+										</Option>
+                                    )
+                                })
+                            }
 						</Select>
-
-						科目:
-						<Select
-							placeholder="科目"
-							style={{width:150,margin:'0px 20px 0px 10px'}}
-						>
-							<Option value="高等代数">高等代数</Option>
-							<Option value="数学分析">数学分析</Option>
-						</Select>
-
-
-
-						<SearchTable/>
 					</Header>
 					<Content style={{borderTop:'2px solid skyblue',overflowY:'scroll',padding:'20px 30px'}}>
-						<GradeTable></GradeTable>
+						<GradeList {...tableProps}/>
+						<MyPagination {...paginationProps}/>
 					</Content>
 				</Layout>
 			</Layout>
@@ -49,6 +111,6 @@ class Data extends React.Component {
 }
 
 export default connect(
-	state => ({...state.mapDataR,id:state.dataTermR.id}),
+	state => ({...state.getScoreR,...state.setSearchR}),
 	action
-)(Data)
+)(Grade)

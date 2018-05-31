@@ -25,7 +25,9 @@ ReactDOM.render(
 						routes.map((route,i)=>{
 							if(route.path==='/'){
 								return <Route path="/" exact key={i} render={props=>(
-									getSession('username')? <Redirect to="/homework"/>:<Redirect to="/login"/>
+									getSession('role')
+										? getSession('role')==='1'?<Redirect to="/homeworkt"/>:<Redirect to="/homework"/>
+										:<Redirect to="/login"/>
 									)}/>
 							}else{
 								return <Route path={route.path} {...route.props} key={i} render={props=>(

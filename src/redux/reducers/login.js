@@ -2,7 +2,8 @@ import * as Types from '../action-types';
 import cloneDeep from 'lodash.clonedeep';
 
 let initState={
-	username:'',
+	role:'',
+	token:''
 };
 
 export default (state=cloneDeep(initState),action)=>{
@@ -10,12 +11,14 @@ export default (state=cloneDeep(initState),action)=>{
 		case Types.LOGIN_SUCCESS:
 			return {
 				...state,
-				username:action.username
+				role:action.role,
+                token:action.token
 			};
 		case Types.LOGOUT_SUCCESS:
 			return {
 				...state,
-				username:''
+                role:'',
+                token:''
 			};
 		default:
 			return state;

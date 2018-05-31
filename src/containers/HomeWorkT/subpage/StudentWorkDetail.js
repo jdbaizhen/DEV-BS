@@ -1,73 +1,126 @@
-import React,{Component} from 'react'
-import logo from '../../../common/images/login2.jpg'
-import {Layout,Input,Button} from 'antd';
+import React,{Component} from 'react';
+import {Button} from 'antd';
+import {connect} from 'react-redux';
+import * as action from '../../../redux/actions/homeworkt';
+import { Link } from 'react-router-dom';
+import {getSession} from "../../../utils/util";
+import MyTable from '../../../components/MyTable/index'
+import MyPagination from '../../../components/MyPagination/index'
 
-
-let {Content,Sider} = Layout;
-let {TextArea} = Input;
-
-
-export default class StudentWorkDetail extends Component{
-    constructor() {
-        super();
+class StudentWorkDetail extends Component{
+    constructor(props){
+        super(props);
         this.state={
-            score : '',
-            suggestion : '',
+            loading:true,
+            detailCount:0,
+            setTableH: () => {},
         }
     }
 
-    handleChangeScore=(event)=>{
-        let score = event.target.value;
+    setTableH = (fn) => {
+        this.setState({setTableH: fn});
+    };
+
+    getCount = (num) => {
         this.setState({
-            score : score
+            detailCount: num
         })
-    }
-    handleChangeSuggestion=(event)=>{
-        let suggestion = event.target.value;
-        this.setState({
-            suggestion : suggestion
+    };
+
+    getData = (...obj) => {
+        let token = getSession('token');
+        let {getStudentList} = this.props;
+        let href = window.location.href;
+        let workId = href.substring(href.indexOf('main/')+5);
+        getStudentList({
+            workId:workId,
+            pageIndex:'1',
+            pageSize:'10',
+            ...obj
+        },{token:token}).then(data=>{
+            if(data.result){
+                this.setState({
+                    loading:false
+                })
+            }
         })
     }
 
-    handleClick=()=>{
-        console.log(this.state)
+    componentDidMount() {
+        this.getData();
     }
+
+    /*componentWillReceiveProps (newProps) {
+        let {pageIndex,pageSize} = newProps;
+        this.getData({
+            pageIndex,
+            pageSize,
+        })
+    }*/
 
     render() {
-
+        let {count,details,pageIndex,setPageStudentWorkDetail} = this.props;
+        let {detailCount} = this.state;
+        let {loading} = this.state;
+        let paginationProps = {
+            count,
+            pageIndex,
+            setPage:setPageStudentWorkDetail,
+            isShowSizeChanger: false
+        };
+        let myTableProps = {
+            count: count,
+            allCount: count,
+            setTableH:this.setTableH,
+            data: details,
+            heightLess: 60,
+            loading,
+            isRowSelection: true,
+            handleDelete: this.handleDelete,
+            rowSelection: {},
+            columns: [
+                {
+                    title: "序号", width:'20%' , key: 'stuWorkId',render : (text,record) => (
+                      details.indexOf(record)+1
+                    )
+                },{
+                    title: "姓名", dataIndex: "studentName", key: 'studentName',width: '20%',
+                },{
+                    title: "学号", dataIndex: "studentNumber", key: 'studentNumber',width: '20%',
+                },
+                {
+                    title: "状态", dataIndex: "status", key: 'status',width: '20%',
+                    render : (text,record) => (
+                        <span> {text===0?'未批改':'已批改'}</span>
+                    )
+                },{
+                    title: "批改", dataIndex: "edit", key: 'edit', width : '20%',
+                    render: (text, record) => (
+                        <div>
+                            {
+                                record.isOnline===0
+                                    ? <Link to={`/homeworkt/detail/correct/${record.stuWorkId}`}>
+                                        <Button type="primary" ghost icon="edit"/>
+                                    </Link>
+                                    : <Link to={`/homeworkt/detail/correctonline/${record.stuWorkId};${record.studentNumber}`}>
+                                        <Button type="primary" ghost icon="edit"/>
+                                    </Link>
+                            }
+                        </div>
+                    )
+                }
+            ]
+        };
         return(
-            <Layout style={{backgroundColor:'#ffffff',marginTop:'10px',boxShadow:'0 0 10px rgba(0, 21, 41, 0.08)'}}>
-
-                <Content style={{overflow:'scroll',padding:'20px'}}>
-                    <img src={logo} alt=""/>
-                </Content>
-                <Sider style={{backgroundColor:'#ffffff',padding:'20px'}}>
-                    <h2>批改</h2>
-                    <Input
-                        defaultValue={this.state.score}
-                        placeholder='导师评分'
-                        style={{marginTop:'20px'}}
-                        onChange={this.handleChangeScore}
-                    />
-                    <TextArea
-                        rows={8}
-                        placeholder='导师建议'
-                        style={{margin:'20px 0px'}}
-                        defaultValue={this.state.suggestion}
-                        onChange={this.handleChangeSuggestion}
-                    >
-
-                    </TextArea>
-                    <Button
-                        type="primary"
-                        style={{width:'100%'}}
-                        onClick={this.handleClick}
-                    >
-                        提交
-                    </Button>
-                </Sider>
-            </Layout>
+           <div style={{padding:'20px 50px',backgroundColor:'#fff',marginTop:'10px'}}>
+               <MyTable {...myTableProps}/>
+               <MyPagination {...paginationProps}/>
+           </div>
         )
     }
 }
 
+export default connect(
+    state=>({...state.StudentHomeWorkListR,...state.StudentListSearchTermR}),
+    action
+)(StudentWorkDetail)

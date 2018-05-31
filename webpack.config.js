@@ -9,9 +9,9 @@ let ExtractTextWebpack=require("extract-text-webpack-plugin");
 
 let isDev = process.env.NODE_ENV ==='develop';
 let isTest = process.env.NODE_ENV ==='test';
-let testIp='192.168.3.94:4332';
-let port = 4333;
-let serverPort = 4331;
+let testIp='112.23.225.58:8080';
+let port = 2345;
+let serverPort = 1208;
 let host = 'localhost';
 let domain='/';
 
@@ -19,7 +19,6 @@ module.exports = {
 	entry: './src/index.js',
 	output: {
 		path: path.resolve(__dirname, "./build"),
-		publicPath: isDev||isTest ? `http://${host}:${port}/` : domain,
 		filename: 'bundle.js'
 	},
 	module: {
@@ -28,40 +27,29 @@ module.exports = {
 				test: /\.(jsx|js)$/,
 				exclude: /node_modules/,
 				use: 'babel-loader'
-			},
-			{
+			},{
 				test: /\.(less|css)$/,
 				loader:ExtractTextWebpack.extract({fallback:'style-loader',use:[
-					'css-loader',
-					"postcss-loader",
-					'less-loader']})
-			},
-			{
+					'css-loader',"postcss-loader",'less-loader']})
+			},{
 				test: /\.(eot|svg|woff|woff2|ttf|jpg|jpeg|png|gif)$/,
 				loader: "url-loader",
 				options: {
 					limit: 8192,
 					outputPath:'images/'
 				}
-			},
-			{
+			},{
 				test: /\.json$/,
 				loader: 'json-loader',
-				options: {
-					outputPath:'json/'
-				}
+				options: {outputPath:'json/'}
 			}
 		]
 	},
 	resolve: {
 		alias: {
 			'@': path.resolve(__dirname,"./src"),
-
 		},
 		extensions: ['.js', '.jsx']
-	},
-	externals:{
-		BMap:'BMap'
 	},
 	context: __dirname,
 	devtool: isDev||isTest ?'source-map' : '',

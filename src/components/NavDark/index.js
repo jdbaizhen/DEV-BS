@@ -15,8 +15,7 @@ export default class NavDark extends React.Component {
 	}
 
 	render() {
-		let user = this.props.user;
-		let {mode, navItems, navItemsT, theme, inlineCollapsed} = this.props;
+		let {mode, navItems, theme, inlineCollapsed} = this.props;
 		let {defaultOpenWord,defaultSelectedWord}=this.state;
 		let defaultSelectedKey='/'+defaultOpenWord;
 		if(defaultSelectedWord){

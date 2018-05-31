@@ -8,6 +8,8 @@ import caseR from './case';
 import caseTableR from './caseTable';
 import trackR from './track';
 import trackResultR from './trackResult'
+import SelfInfoR from './selfInfo'
+import GradeR from './grade'
 
 export default combineReducers({
 	...trackResultR,
@@ -17,6 +19,8 @@ export default combineReducers({
 	...chartR,
 	...homeworktR,
 	...dataR,
+	...SelfInfoR,
+	...GradeR,
 	loginR,
 	router:routerReducer
 })

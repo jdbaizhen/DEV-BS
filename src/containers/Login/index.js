@@ -12,7 +12,6 @@ class Login extends React.Component {
 			title: <span>登&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;录</span>,
 			login: this.props.login
 		};
-		console.log(this.state);
 		return (
 			<div className="login">
 				<LoginWindow {...props}/>

@@ -109,7 +109,7 @@ class HomeWorkIndex extends React.Component {
             isShowSizeChanger: false
         }
         return (
-                <Layout style={{backgroundColor:'#ffffff',marginTop:'10px',boxShadow:'0 0 10px rgba(0, 21, 41, 0.08)'}}>
+                <Layout style={{backgroundColor:'#ffffff',marginTop:'10px'}}>
                     <Header style={{backgroundColor:'#fff'}}>
                         选择课程:
                         <Select
@@ -128,7 +128,7 @@ class HomeWorkIndex extends React.Component {
                             }
                         </Select>
                     </Header>
-                    <Content style={{borderTop:'2px solid skyblue',padding:'20px 50px'}}>
+                    <Content style={{borderTop:'2px solid skyblue',padding:'20px 50px',overflowY:'scroll'}}>
                         <HomeWorkList {...tableProps}/>
                         <MyPagination {...paginationProps}/>
                     </Content>

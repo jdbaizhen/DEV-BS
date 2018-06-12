@@ -141,7 +141,7 @@ class HomeWorkT extends React.Component {
 							type='primary'
 							style={{float:'right',marginTop:'20px'}}
 							onClick={handleSee}
-						>上传作业</Button>
+						>布置作业</Button>
 
 						<WorkForm {...formProps}/>
 					</Header>

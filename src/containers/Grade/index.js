@@ -21,9 +21,6 @@ class Grade extends React.Component {
 		}
 	}
 
-    setTableH = (fn) => {
-        this.setState({setTableH: fn});
-    };
     handleSearch = (value) => {
     	let {setSearchScore} = this.props;
         setSearchScore(value);
@@ -61,8 +58,9 @@ class Grade extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
-		let {pageIndex,pageSize,courseId} = newProps;
-        this.getData({pageIndex,pageSize,courseId});
+        console.log(newProps);
+        /*let {pageIndex,pageSize,courseId} = newProps;
+        this.getData({pageIndex,pageSize,courseId});*/
 	}
 
 	render() {

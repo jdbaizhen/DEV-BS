@@ -193,6 +193,14 @@ class WorkFormC extends Component{
         console.log(uploadImg);
     };
 
+    handleClear = () => {
+        this.setState({
+            numberChose : [],
+            numberFill: [],
+            number: [],
+        })
+    }
+
     componentDidMount() {
         let { getSee } = this.props;
         getSee(this.handleSee);
@@ -227,7 +235,7 @@ class WorkFormC extends Component{
             colon: false
         };
         let uploadProps={
-            action:'http://112.23.225.58:8080/work/mkwork/'+token,
+            action:'http://112.0.120.229:8080/work/mkwork/'+token,
             data:formData,
             beforeUpload:this.beforeUpload,
             onChange:this.onChange
@@ -287,7 +295,7 @@ class WorkFormC extends Component{
                             )}
                         </FormItem>
 
-                        <FormItem label="时间" {...formItemLayout}>
+                        <FormItem label="截至时间" {...formItemLayout}>
                             {getFieldDecorator("courseTime", {
                                 trigger: disable ? null : 'onChange',
                                 rules: [
@@ -380,7 +388,7 @@ class WorkFormC extends Component{
                             )}
                         </FormItem>
 
-                        <FormItem label="时间" {...formItemLayout}>
+                        <FormItem label="截至时间" {...formItemLayout}>
                             {getFieldDecorator("courseTime", {
                                 trigger: disable ? null : 'onChange',
                                 rules: [
@@ -589,36 +597,28 @@ class WorkFormC extends Component{
                                 {
                                     number.map((item,index)=>{
                                         return(
-                                            <Tabs defaultActiveKey="11">
-                                                <TabPane tab={`编辑第${index+1}题`} key="11">
-                                                    <div>
-                                                        <FormItem
-                                                            label={`主观第${index+1}题`}
-                                                            {...formItemLayout}
-                                                        >
-                                                            {getFieldDecorator(`question${index+1}`, {
-                                                                trigger: disable ? null : 'onChange',
-                                                                rules: [
-                                                                    {
-                                                                        required: true,
-                                                                        message: '请输入题目'
-                                                                    }
-                                                                ]
-                                                            })(
-                                                                <TextArea
-                                                                    rows={4}
-                                                                    placeholder={`主观第${index+1}题题目`}
-                                                                />
-                                                            )}
-                                                        </FormItem>
-                                                    </div>
-                                                </TabPane>
-                                                <TabPane tab={`上传第${index+1}题`} key="12">
-                                                    <div style={{margin:'0px 20%'}}>
-                                                        <MultiImgUpload {...imgProps}/>
-                                                    </div>
-                                                </TabPane>
-                                            </Tabs>
+                                            <div>
+                                                <FormItem
+                                                    label={`主观第${index+1}题`}
+                                                    {...formItemLayout}
+                                                >
+                                                    {getFieldDecorator(`question${index+1}`, {
+                                                        trigger: disable ? null : 'onChange',
+                                                        rules: [
+                                                            {
+                                                                required: true,
+                                                                message: '请输入题目'
+                                                            }
+                                                        ]
+                                                    })(
+                                                        <TextArea
+                                                            rows={4}
+                                                            placeholder={`主观第${index+1}题题目`}
+                                                        />
+                                                    )}
+                                                </FormItem>
+                                            </div>
+
 
                                         )
                                     })
@@ -626,6 +626,13 @@ class WorkFormC extends Component{
                             </Panel>
                         </Collapse>
                         <div style={{textAlign:'center'}}>
+                            <Button
+                                type='default'
+                                onClick={this.handleClear}
+                                style={{background:'red',color:'#fff',marginRight:'20px'}}
+                            >
+                                清空
+                            </Button>
                             <Button
                                 type='primary'
                                 style={{marginRight:'20px'}}

@@ -1,5 +1,5 @@
 import * as types from '../action-types'
-import {getScoreListA,getScoreA,scoreDetailOnlineA,scoreDetailNotOnlineA} from "../../api/grade";
+import {getScoreListA,getScoreA,scoreDetailOnlineA,scoreDetailNotOnlineA,studentGetWorkonlineScoreA} from "../../api/grade";
 import {getTeacherSubjectA,getSubjectListA} from "../../api/homeworkt"
 
 export let getScoreList = (data,token) => (dispatch) => (
@@ -170,3 +170,9 @@ export let setPageDetailScore = (num1,num2) => (dispatch) => {
         pageSize: num2
     })
 }
+
+export let studentGetWorkonlineScore = (data,token) => (dispatch) => (
+    studentGetWorkonlineScoreA(data,token).then( data => {
+        return data;
+    })
+)

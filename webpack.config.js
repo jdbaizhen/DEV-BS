@@ -10,7 +10,7 @@ let ExtractTextWebpack=require("extract-text-webpack-plugin");
 let isDev = process.env.NODE_ENV ==='develop';
 let isTest = process.env.NODE_ENV ==='test';
 
-let testIp='112.0.120.229:8080';
+let testIp='112.23.81.78:8080';
 let port = 2345;
 let serverPort = 1208;
 
